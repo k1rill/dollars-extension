@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Тест «Ў далярах»</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        padding: 24px;
+        max-width: 520px;
+      }
+      h1 {
+        font-size: 18px;
+      }
+      p {
+        margin: 16px 0;
+      }
+      .avby-like {
+        font-size: 20px;
+        font-weight: 600;
+      }
+      code {
+        font-size: 12px;
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Проверка расширения</h1>
+    <p>
+      Откройте эту страницу через локальный сервер (не file://), например из папки
+      <code>extension</code>:
+    </p>
+    <pre>python3 -m http.server 8765</pre>
+    <p>Затем в браузере: <code>http://127.0.0.1:8765/test-page.html</code></p>
+    <p>В манифесте должны быть совпадения для <code>http://127.0.0.1/*</code>.</p>
+
+    <p class="avby-like">
+      Как на av.by (число и «р.» в разных узлах):
+      <span>51 211</span>
+      <!-- -->
+      р.
+    </p>
+
+    <p class="avby-like">Одной строкой: 38 900 р.</p>
+  </body>
+</html>
