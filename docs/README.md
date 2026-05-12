@@ -1,0 +1,7 @@
+# Документация
+
+| Файл | Назначение |
+|------|------------|
+| [store-listing.md](store-listing.md) | Описания для Chrome Web Store на русском |
+| [store-listing-en.md](store-listing-en.md) | То же на английском + пояснения к каждому permission |
+| [PRIVACY_POLICY.md](PRIVACY_POLICY.md) | Политика конфиденциальности (опубликовать по URL для магазина) |
