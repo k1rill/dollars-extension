@@ -80,10 +80,10 @@ Below is how each declared permission and host access is used in **version 1.1.0
 
 ## Privacy policy URL
 
-Host the English text from **`PRIVACY_POLICY.md`** (same repository) on a public URL (e.g. GitHub raw link or GitHub Pages) and paste it into the Chrome Web Store privacy field.
+Host the English text from **[docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)** on a public URL (e.g. GitHub raw link or GitHub Pages) and paste it into the Chrome Web Store privacy field.
 
 ---
 
 ## ZIP package
 
-Upload **`u-dalyarah-1.1.0.zip`** from the project root (`dollars/`). It contains only runtime extension files (manifest, scripts, styles, icons).
+Create a ZIP of the **`chrome-extension/`** folder contents (not the parent folder — `manifest.json` must be at the root of the archive). See the root **[README.md](../README.md)** for a packaging example.
