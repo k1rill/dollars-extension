@@ -56,6 +56,24 @@
         margin-bottom: 8px;
         cursor: pointer;
       }
+      .section-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #444;
+        margin: 12px 0 6px;
+      }
+      #sitePickers {
+        margin-left: 12px;
+        padding-left: 8px;
+        border-left: 2px solid #e8e8e8;
+      }
+      #sitePickers label {
+        font-size: 12px;
+        color: #333;
+      }
+      #sitePickers[hidden] {
+        display: none;
+      }
       .meta {
         margin-top: 12px;
         padding-top: 10px;
@@ -88,6 +106,26 @@
   </head>
   <body>
     <h1>Ў далярах</h1>
+    <p class="section-title">Сайты</p>
+    <label>
+      <input type="checkbox" id="sitesAll" checked />
+      На всех поддерживаемых сайтах
+    </label>
+    <div id="sitePickers" hidden>
+      <label>
+        <input type="checkbox" id="siteAvBy" checked />
+        av.by
+      </label>
+      <label>
+        <input type="checkbox" id="siteOnliner" checked />
+        catalog.onliner.by
+      </label>
+      <label>
+        <input type="checkbox" id="siteVek21" checked />
+        21vek.by
+      </label>
+    </div>
+    <p class="section-title">Отображение</p>
     <label>
       <input type="checkbox" id="inline" />
       Показывать рядом с ценой

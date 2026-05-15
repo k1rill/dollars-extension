@@ -28,6 +28,75 @@
   display: inline;
 }
 
+/* Onliner: 2390 + ,00 ƃ у двух flex-блоках — захоўваем радок, канвертацыя асобна */
+.avfx-onliner-price {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  vertical-align: baseline;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.avfx-onliner-price > * {
+  flex-shrink: 0;
+}
+
+/* Маркер радка Onliner — display не мяняем, застаецца h_flx_* сайта */
+.avfx-onliner-row {
+  row-gap: 2px;
+}
+
+.avfx-inline-onliner {
+  flex: 0 1 auto;
+  margin-left: 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+/* Табліца /prices: h_txt_ell хавае хвост цэны пад «…» */
+.h_txt_ell.avfx-ellipsis-relaxed {
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: normal !important;
+}
+
+/* Адна радко цана + (≈ $ · €) — конвертацыя на наступны радок, не ў ellipsis */
+.avfx-hook-onliner-cell {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  align-content: flex-start;
+  column-gap: 6px;
+  row-gap: 2px;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+
+.avfx-hook-onliner-cell .avfx-price-text {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.avfx-hook-onliner-cell .avfx-inline,
+/* 21vek: 1 167, + 29 р. — адзін радок */
+.avfx-rub-fraction {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
+.avfx-hook-onliner-cell .avfx-inline-onliner {
+  flex: 1 1 100%;
+  margin-left: 0;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
 #avfx-tooltip-host {
   position: fixed;
   z-index: 2147483646;

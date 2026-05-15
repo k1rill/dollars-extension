@@ -35,17 +35,25 @@ async function loadState() {
     "fxCache",
     "fxRatesError",
   ]);
+  const raw = data.fxSettings || {};
   const s = {
     showInline: true,
     showHover: true,
     showUsd: true,
     showEur: true,
-    ...(data.fxSettings || {}),
+    sitesAllEnabled: true,
+    ...raw,
+    sites: { avBy: true, onlinerCatalog: true, vek21: true, ...(raw.sites || {}) },
   };
   $("inline").checked = !!s.showInline;
   $("hover").checked = !!s.showHover;
   $("showUsd").checked = s.showUsd !== false;
   $("showEur").checked = s.showEur !== false;
+  $("sitesAll").checked = s.sitesAllEnabled !== false;
+  $("siteAvBy").checked = s.sites.avBy !== false;
+  $("siteOnliner").checked = s.sites.onlinerCatalog !== false;
+  $("siteVek21").checked = s.sites.vek21 !== false;
+  syncSitePickersVisibility();
 
   const status = $("status");
   const errEl = $("err");
@@ -70,6 +78,11 @@ async function loadState() {
   }
 }
 
+function syncSitePickersVisibility() {
+  const all = $("sitesAll").checked;
+  $("sitePickers").hidden = all;
+}
+
 async function saveSettings() {
   const cur = await chrome.storage.local.get("fxSettings");
   const prev = cur.fxSettings || {};
@@ -80,9 +93,38 @@ async function saveSettings() {
       showHover: $("hover").checked,
       showUsd: $("showUsd").checked,
       showEur: $("showEur").checked,
+      sitesAllEnabled: $("sitesAll").checked,
+      sites: {
+        avBy: $("siteAvBy").checked,
+        onlinerCatalog: $("siteOnliner").checked,
+        vek21: $("siteVek21").checked,
+      },
     },
   });
 }
+
+$("sitesAll").addEventListener("change", () => {
+  syncSitePickersVisibility();
+  saveSettings();
+});
+function ensureAtLeastOneSiteEnabled(changedId) {
+  if ($("sitesAll").checked) return;
+  if ($("siteAvBy").checked || $("siteOnliner").checked || $("siteVek21").checked) return;
+  $(changedId).checked = true;
+}
+
+$("siteAvBy").addEventListener("change", () => {
+  ensureAtLeastOneSiteEnabled("siteAvBy");
+  saveSettings();
+});
+$("siteOnliner").addEventListener("change", () => {
+  ensureAtLeastOneSiteEnabled("siteOnliner");
+  saveSettings();
+});
+$("siteVek21").addEventListener("change", () => {
+  ensureAtLeastOneSiteEnabled("siteVek21");
+  saveSettings();
+});
 
 $("inline").addEventListener("change", saveSettings);
 $("hover").addEventListener("change", saveSettings);

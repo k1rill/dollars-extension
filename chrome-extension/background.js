@@ -8,6 +8,8 @@ const DEFAULT_SETTINGS = {
   showHover: true,
   showUsd: true,
   showEur: true,
+  sitesAllEnabled: true,
+  sites: { avBy: true, onlinerCatalog: true, vek21: true },
 };
 
 async function fetchAndStoreRates() {
