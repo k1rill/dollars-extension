@@ -1,11 +1,13 @@
+/* @font-face для «nbrb» ушытваецца ў content.js праз chrome.runtime.getURL — інакш url() ў manifest CSS рэзолвіцца адносна av.by і шрыфт не грузіцца. */
+
 .avfx-inline {
-  margin-left: 8px;
+  margin-left: 6px;
   /* не меньш за асноўны лік; крыху цямней і жорстчэй — лепш чытаецца */
-  font-size: clamp(13px, 1.05em, 17px);
+  font-size: clamp(13px, 1.05em, 15px);
   font-weight: 600;
   color: #374151;
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
   white-space: nowrap;
@@ -47,8 +49,9 @@
   transition: opacity 0.12s ease-out;
 }
 
-#avfx-tooltip-host strong,
-#avfx-tooltip-host span {
+/* Іканачны шрыфт НБРБ — не скідваць у inherit ад падказкі */
+#avfx-tooltip-host span:not(.avfx-nbrb-icon),
+#avfx-tooltip-host strong {
   font-family: inherit;
 }
 
@@ -56,20 +59,29 @@
   opacity: 1;
 }
 
-/* Знак беларускага рубля (НБРБ), SVG — у цёмнай падказке інвертуем у светлы */
-.avfx-byn-icon {
-  height: 0.77em;
-  width: auto;
-  min-width: 8px;
-  max-height: 13px;
-  vertical-align: middle;
-  margin: 0;
+/**
+ * Знак BYN — іканачны шрыфт НБРБ (гл. https://www.nbrb.by/coinsbanknotes/byn-ico/nbrb-font )
+ * Гліф Private Use: \e901
+ */
+.avfx-nbrb-icon {
+  font-family: "nbrb", sans-serif !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  speak: never;
   display: inline-block;
-  object-fit: contain;
-  transform: translateY(-0.02em);
+  font-size: 1em;
+  line-height: 1;
+  vertical-align: -0.08em;
+  margin: 0 1px;
+  -webkit-font-smoothing: antialiased;
 }
 
-#avfx-tooltip-host .avfx-byn-icon {
-  filter: invert(1);
-  transform: translateY(-0.02em);
+.avfx-nbrb-icon::before {
+  content: "\e901";
+}
+
+#avfx-tooltip-host .avfx-nbrb-icon {
+  color: #f9fafb;
 }

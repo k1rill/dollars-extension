@@ -8,7 +8,7 @@
 |----------------|------------|
 | **[chrome-extension/](chrome-extension/)** | Исходники расширения (`manifest.json`, скрипты, стили, иконки). **Эту папку** нужно выбирать в Chrome → «Загрузить распакованное расширение». |
 | **[docs/](docs/)** | Тексты для публикации в Chrome Web Store (RU/EN), политика конфиденциальности. |
-| **[scripts/](scripts/)** | Вспомогательные скрипты (например, создание репозитория на GitHub). |
+| **[scripts/](scripts/)** | Упаковка расширения для Chrome Web Store, вспомогательные скрипты. |
 
 ## Быстрый старт (разработка)
 
@@ -20,13 +20,15 @@
 
 ## Архив для Chrome Web Store
 
-Соберите ZIP с **содержимым** `chrome-extension/` (в корне архива должны лежать `manifest.json`, папка `icons/` и т.д.):
+Из корня репозитория:
 
 ```bash
-cd chrome-extension && zip -r ../u-dalyarah-1.1.0.zip manifest.json *.js *.css *.html icons/
+./scripts/package-chrome-extension.sh
 ```
 
-Или вручную: выделите файлы внутри `chrome-extension/` → «Сжать».
+В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`** (в корне архива лежат `manifest.json`, `fonts/`, `icons/` и скрипты — без `test-page.html`, `generate_icons.py`, `icon-source.png`). Имя версии берётся из **`chrome-extension/manifest.json`**.
+
+Загрузите ZIP в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → ваш → **Package**.
 
 Подробные тексты для карточки магазина — в **[docs/store-listing.md](docs/store-listing.md)** (RU) и **[docs/store-listing-en.md](docs/store-listing-en.md)** (EN).
 

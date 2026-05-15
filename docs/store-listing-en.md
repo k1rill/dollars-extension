@@ -34,11 +34,11 @@ Use **1280×800** or **640×400**, PNG or JPEG.
 
 ## Permission justification (for the “single purpose / permissions” section)
 
-Below is how each declared permission and host access is used in **version 1.1.0**.
+Below is how each declared permission and host access is used in **version 1.3.0**.
 
 ### `storage` (`chrome.storage.local`)
 
-**Used for:** saving (1) user settings — whether to show inline conversion and/or hover tooltip; (2) cached NBRB rates and timestamp so conversions still work briefly if the API is unreachable.
+**Used for:** saving (1) user settings — inline and/or hover display, and separately USD and/or EUR in conversions; (2) cached NBRB rates and timestamp so conversions still work briefly if the API is unreachable.
 
 **Not used for:** tracking, advertising, or syncing data to external servers. Data stays in the user’s browser profile.
 
@@ -54,13 +54,13 @@ Below is how each declared permission and host access is used in **version 1.1.0
 
 ### Host permission: `https://av.by/*`
 
-**Used for:** injecting the **content script** on the main av.by site so prices can be detected and USD/EUR equivalents shown; loading the **BYN currency symbol** (SVG) from extension resources into the page for display next to amounts where applicable.
+**Used for:** injecting the **content script** on the main av.by site so prices can be detected and USD/EUR equivalents shown; applying bundled styles including the **NBRB icon font** for the BYN symbol where shown.
 
 ---
 
 ### Host permission: `https://*.av.by/*`
 
-**Used for:** the same content script and SVG on **all av.by subdomains** (e.g. **cars.av.by**, **moto.av.by**). Listing pages often live on subdomains, not only on `av.by`.
+**Used for:** the same content script and styles on **all av.by subdomains** (e.g. **cars.av.by**, **moto.av.by**). Listing pages often live on subdomains, not only on `av.by`.
 
 ---
 
@@ -72,7 +72,7 @@ Below is how each declared permission and host access is used in **version 1.1.0
 
 ### Related (not separate permissions, but reviewers sometimes ask)
 
-**`web_accessible_resources`:** `icons/byn-symbol.svg` is exposed so the **page** can display the official-style BYN glyph in the tooltip via `<img src="chrome-extension://…">`. Only this asset is exposed; it does not grant remote code execution.
+**BYR/BYN glyph:** the official **NBRB icon font** files under `fonts/` are bundled and listed in **`web_accessible_resources`** so pages on av.by can load them for `@font-face` (private-use glyph `\e901`), drawn as text rather than a remote image.
 
 **Content scripts** are matched to `https://av.by/*` and `https://*.av.by/*` in `manifest.json`; host permissions above align with those patterns.
 
@@ -86,4 +86,4 @@ Host the English text from **[docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)** on a 
 
 ## ZIP package
 
-Create a ZIP of the **`chrome-extension/`** folder contents (not the parent folder — `manifest.json` must be at the root of the archive). See the root **[README.md](../README.md)** for a packaging example.
+Run **`./scripts/package-chrome-extension.sh`** from the repository root; upload **`dist/udalyarah-<version>.zip`**. The archive root must contain `manifest.json` (not a nested folder). See **[README.md](../README.md)**.

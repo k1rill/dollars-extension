@@ -4,6 +4,31 @@
     <meta charset="UTF-8" />
     <title>Ў далярах</title>
     <style>
+      /* Іканачны шрыфт знака рубля — НБРБ: https://www.nbrb.by/coinsbanknotes/byn-ico/nbrb-font */
+      @font-face {
+        font-family: "nbrb";
+        src:
+          url("fonts/nbrb.woff2") format("woff2"),
+          url("fonts/nbrb.woff") format("woff"),
+          url("fonts/nbrb.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+        font-display: block;
+      }
+      .popup-nbrb-icon {
+        font-family: "nbrb", sans-serif !important;
+        font-style: normal;
+        font-weight: normal;
+        display: inline-block;
+        font-size: 1.4em;
+        line-height: 1;
+        vertical-align: -0.02em;
+        margin: 0;
+        color: inherit;
+      }
+      .popup-nbrb-icon::before {
+        content: "\e901";
+      }
       /* Яўныя шрыфты з добрай кірыліцай / лацінкай (Chrome popup часам дае дзіўны fallback) */
       html,
       body,
@@ -59,15 +84,6 @@
         opacity: 0.6;
         cursor: not-allowed;
       }
-      .popup-byn-icon {
-        display: inline-block;
-        height: 0.88em;
-        width: auto;
-        aspect-ratio: 360.67 / 446.4;
-        margin: 0;
-        vertical-align: -0.12em;
-        color: inherit;
-      }
     </style>
   </head>
   <body>
@@ -79,6 +95,14 @@
     <label>
       <input type="checkbox" id="hover" />
       Показывать при наведении
+    </label>
+    <label>
+      <input type="checkbox" id="showUsd" />
+      В долларах (USD)
+    </label>
+    <label>
+      <input type="checkbox" id="showEur" />
+      В евро (EUR)
     </label>
     <button type="button" id="refresh">Обновить курсы НБРБ</button>
     <div class="meta" id="status">Загрузка…</div>

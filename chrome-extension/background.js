@@ -6,6 +6,8 @@ const PERIOD_MINUTES = 360;
 const DEFAULT_SETTINGS = {
   showInline: true,
   showHover: true,
+  showUsd: true,
+  showEur: true,
 };
 
 async function fetchAndStoreRates() {

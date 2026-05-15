@@ -1,5 +1,28 @@
 (() => {
-  const BYN_ICON_URL = chrome.runtime.getURL("icons/byn-symbol.svg");
+  /**
+   * У контэнт-скрыптаў Chrome адносныя url() ў CSS часта рэзолвяцца адносна старонкі (av.by),
+   * а не пакета — шрыфт не падцягваецца. Пупап бярэ chrome-extension://, там усё ОК.
+   */
+  (function injectNbrbFontFace() {
+    if (document.getElementById("avfx-nbrb-font-face")) return;
+    const style = document.createElement("style");
+    style.id = "avfx-nbrb-font-face";
+    const w2 = chrome.runtime.getURL("fonts/nbrb.woff2");
+    const woff = chrome.runtime.getURL("fonts/nbrb.woff");
+    const ttf = chrome.runtime.getURL("fonts/nbrb.ttf");
+    /* Пробел перад format() абавязковы — інакш src можа разабрацца як несапраўдны */
+    style.textContent = `@font-face {
+      font-family: "nbrb";
+      src:
+        url("${w2}") format("woff2"),
+        url("${woff}") format("woff"),
+        url("${ttf}") format("truetype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }`;
+    (document.head || document.documentElement).appendChild(style);
+  })();
 
   /**
    * Полная строка в одном текстовом узле: «51 211 р.», Br, BYN…
@@ -13,12 +36,45 @@
    */
   const RUB_SUFFIX_TEXT_RE = /^\s*р\.\s*$/u;
 
-  const DEFAULTS = { showInline: true, showHover: true };
+  const DEFAULTS = {
+    showInline: true,
+    showHover: true,
+    showUsd: true,
+    showEur: true,
+  };
 
   let settings = { ...DEFAULTS };
   let cache = null;
   let tooltipEl = null;
   let debounceTimer = null;
+  let hideTooltipTimer = null;
+  /** Пасля сыходу з кнопкі/хука — хаваць не адразу (без глабальнага pointermove: менш збояў) */
+  const TOOLTIP_HIDE_MS = 550;
+
+  function cancelScheduledHideTooltip() {
+    if (hideTooltipTimer !== null) {
+      clearTimeout(hideTooltipTimer);
+      hideTooltipTimer = null;
+    }
+  }
+
+  function scheduleHideTooltip() {
+    cancelScheduledHideTooltip();
+    hideTooltipTimer = window.setTimeout(() => {
+      hideTooltipTimer = null;
+      hideTooltipImmediate();
+    }, TOOLTIP_HIDE_MS);
+  }
+
+  function onDocumentElementMouseLeave(ev) {
+    if (ev.target !== document.documentElement) return;
+    if (tooltipEl?.classList.contains("avfx-visible")) hideTooltipImmediate();
+  }
+
+  function hideTooltipImmediate() {
+    cancelScheduledHideTooltip();
+    if (tooltipEl) tooltipEl.classList.remove("avfx-visible");
+  }
 
   function getTooltip() {
     if (!tooltipEl) {
@@ -32,42 +88,55 @@
   }
 
   function hideTooltip() {
-    if (tooltipEl) tooltipEl.classList.remove("avfx-visible");
+    hideTooltipImmediate();
   }
 
-  function positionTooltip(clientX, clientY) {
+  /** Падказка прывязана да блоку цэны, не да курсора — менш мігатання на кнопках і ў картачках */
+  function positionTooltipAnchored(hook) {
     const tt = getTooltip();
-    const pad = 14;
     const margin = 8;
+    const gap = 8;
     tt.style.visibility = "hidden";
     tt.classList.add("avfx-visible");
     const w = tt.offsetWidth;
     const h = tt.offsetHeight;
-    let left = clientX + pad;
-    let top = clientY + pad;
-    if (left + w > window.innerWidth - margin) {
-      left = Math.max(margin, clientX - w - pad);
-    }
+    const rect = hook.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - w / 2;
+    let top = rect.bottom + gap;
+    left = Math.max(margin, Math.min(left, window.innerWidth - w - margin));
     if (top + h > window.innerHeight - margin) {
-      top = Math.max(margin, clientY - h - pad);
+      top = rect.top - h - gap;
     }
+    if (top < margin) top = margin;
     tt.style.left = `${Math.round(left)}px`;
     tt.style.top = `${Math.round(top)}px`;
     tt.style.visibility = "";
   }
 
-  function formatPair(usd, eur) {
-    const u = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(usd);
-    const e = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "EUR",
-      maximumFractionDigits: 0,
-    }).format(eur);
-    return `${u} · ${e}`;
+  function formatConverted(usd, eur) {
+    let showUsd = settings.showUsd !== false;
+    let showEur = settings.showEur !== false;
+    if (!showUsd && !showEur) showUsd = showEur = true;
+    const parts = [];
+    if (showUsd) {
+      parts.push(
+        new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          maximumFractionDigits: 0,
+        }).format(usd),
+      );
+    }
+    if (showEur) {
+      parts.push(
+        new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "EUR",
+          maximumFractionDigits: 0,
+        }).format(eur),
+      );
+    }
+    return parts.join(" · ");
   }
 
   function convert(byn) {
@@ -148,36 +217,35 @@
       const inline = document.createElement("span");
       inline.className = "avfx-inline avfx";
       inline.textContent = conv
-        ? `(≈ ${formatPair(conv.usd, conv.eur)})`
+        ? `(≈ ${formatConverted(conv.usd, conv.eur)})`
         : "(курсы НБРБ недоступны)";
       hook.appendChild(inline);
     }
 
     if (showHover) {
-      hook.addEventListener("mouseenter", (ev) => {
+      /* Не толькі span з цаной: у card__price-button вялікі padding — злева/справа курсор у кнопцы, але не над .avfx-hook */
+      const hoverEl =
+        hook.closest("button, a, [role='button']") || hook;
+      hoverEl.addEventListener("mouseenter", () => {
+        cancelScheduledHideTooltip();
         const c = convert(amount);
         const tt = getTooltip();
         if (c) {
-          tt.innerHTML = `≈ <strong>${formatPair(c.usd, c.eur)}</strong><br/><span style="opacity:.85;font-size:12px;display:inline-flex;align-items:baseline;gap:2px;flex-wrap:wrap">${amount.toLocaleString("ru-RU")}<img src="${BYN_ICON_URL}" alt="" class="avfx-byn-icon" /> · НБРБ</span>`;
+          tt.innerHTML = `≈ <strong>${formatConverted(c.usd, c.eur)}</strong>`;
         } else {
           tt.textContent = cache
             ? "Не удалось вычислить конвертацию"
             : "Курсы НБРБ ещё не загружены";
         }
         tt.classList.add("avfx-visible");
-        positionTooltip(ev.clientX, ev.clientY);
+        positionTooltipAnchored(hook);
       });
-      hook.addEventListener("mousemove", (ev) => {
-        if (getTooltip().classList.contains("avfx-visible")) {
-          positionTooltip(ev.clientX, ev.clientY);
-        }
-      });
-      hook.addEventListener("mouseleave", hideTooltip);
+      hoverEl.addEventListener("mouseleave", scheduleHideTooltip);
     }
   }
 
   function teardown() {
-    hideTooltip();
+    hideTooltipImmediate();
     document.querySelectorAll(".avfx-inline").forEach((el) => el.remove());
     document.querySelectorAll(".avfx-hook").forEach((hook) => {
       const pt = hook.querySelector(".avfx-price-text");
@@ -328,8 +396,13 @@
 
   window.addEventListener(
     "scroll",
-    () => hideTooltip(),
+    () => hideTooltipImmediate(),
     { capture: true, passive: true },
+  );
+
+  document.documentElement.addEventListener(
+    "mouseleave",
+    onDocumentElementMouseLeave,
   );
 
   init().then(() => {

@@ -1,8 +1,8 @@
 const $ = (id) => document.getElementById(id);
 
-/** Inline SVG — колер як у тэксту (.meta) праз currentColor, без розніцы з #111827 у файле */
+/** Знак BYN праз іканачны шрыфт НБРБ (\e901), колер як у тэксту (.meta) */
 function bynIconImg() {
-  return `<svg class="popup-byn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360.67 446.4" aria-hidden="true"><path fill="currentColor" d="M475.61,528.84c0-72.5-62.75-131.27-140.16-131.27H227.58V263.37H426v-49.6H178v290h-63.1v49.7H178V660.17h49.54l107.92-.07c77.36,0,140.11-58.77,140.11-131.26Zm-248-25.1V447.1c35.89,0,72.35.07,107.87.07,50,0,90.56,36.57,90.56,81.67s-40.54,81.67-90.56,81.7l-107.87,0V553.44h112.7v-49.7Z" transform="translate(-114.94 -213.77)"/></svg>`;
+  return `<span class="popup-nbrb-icon" aria-hidden="true"></span>`;
 }
 
 function formatDate(iso) {
@@ -35,12 +35,17 @@ async function loadState() {
     "fxCache",
     "fxRatesError",
   ]);
-  const s = data.fxSettings || {
+  const s = {
     showInline: true,
     showHover: true,
+    showUsd: true,
+    showEur: true,
+    ...(data.fxSettings || {}),
   };
   $("inline").checked = !!s.showInline;
   $("hover").checked = !!s.showHover;
+  $("showUsd").checked = s.showUsd !== false;
+  $("showEur").checked = s.showEur !== false;
 
   const status = $("status");
   const errEl = $("err");
@@ -66,16 +71,30 @@ async function loadState() {
 }
 
 async function saveSettings() {
+  const cur = await chrome.storage.local.get("fxSettings");
+  const prev = cur.fxSettings || {};
   await chrome.storage.local.set({
     fxSettings: {
+      ...prev,
       showInline: $("inline").checked,
       showHover: $("hover").checked,
+      showUsd: $("showUsd").checked,
+      showEur: $("showEur").checked,
     },
   });
 }
 
 $("inline").addEventListener("change", saveSettings);
 $("hover").addEventListener("change", saveSettings);
+
+$("showUsd").addEventListener("change", () => {
+  if (!$("showUsd").checked && !$("showEur").checked) $("showEur").checked = true;
+  saveSettings();
+});
+$("showEur").addEventListener("change", () => {
+  if (!$("showUsd").checked && !$("showEur").checked) $("showUsd").checked = true;
+  saveSettings();
+});
 
 $("refresh").addEventListener("click", async () => {
   const btn = $("refresh");
