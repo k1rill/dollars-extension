@@ -1,10 +1,10 @@
 # Privacy Policy — «Ў далярах» (Chrome extension)
 
-**Last updated:** May 12, 2026
+**Last updated:** May 15, 2026
 
 ## Summary
 
-The extension **«Ў далярах»** («U dalyarah») helps you see prices on **av.by** websites converted to **USD** and **EUR** using official exchange rates from the **National Bank of the Republic of Belarus (NBRB)**.
+The extension **«Ў далярах»** («U dalyarah») helps you see prices on **av.by**, **catalog.onliner.by**, and **21vek.by** converted to **USD** and **EUR** using official exchange rates from the **National Bank of the Republic of Belarus (NBRB)**.
 
 ## Data we collect
 
@@ -14,7 +14,7 @@ We **do not** collect, store, or transmit personal data to the extension develop
 
 The extension uses **Chrome’s local storage** (`chrome.storage.local`) only on your computer to save:
 
-- Your display preferences (e.g. show inline conversion and/or hover tooltip).
+- Your display preferences (e.g. show inline conversion and/or hover tooltip, USD/EUR toggles, enabled sites).
 - Cached NBRB exchange rates and the time they were fetched.
 
 This information **never leaves your device** except as described under “Network requests”.
@@ -24,7 +24,7 @@ This information **never leaves your device** except as described under “Netwo
 The extension may connect to:
 
 1. **https://api.nbrb.by** — to download official daily exchange rates (USD/EUR vs BYN).
-2. **https://av.by** and **https://\*.av.by** — only as web pages you open in your browser; the extension injects scripts to read visible prices and show conversions. **No price data is sent to us.**
+2. **https://av.by**, **https://\*.av.by**, **https://catalog.onliner.by**, **https://www.21vek.by**, and **https://21vek.by** — only as web pages you open in your browser; the extension injects scripts to read visible prices and show conversions. **No price data is sent to us.**
 
 There is **no** backend server operated by the extension author for collecting user data.
 
@@ -32,7 +32,7 @@ There is **no** backend server operated by the extension author for collecting u
 
 - **storage** — save settings and cached rates locally.
 - **alarms** — refresh cached rates periodically.
-- **Host access** — av.by (to run on listing pages) and api.nbrb.by (to fetch rates).
+- **Host access** — av.by, catalog.onliner.by, 21vek.by (to run on pages you visit) and api.nbrb.by (to fetch rates).
 
 ## Contact
 
