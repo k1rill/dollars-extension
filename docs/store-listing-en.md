@@ -36,7 +36,7 @@ Use **1280×800** or **640×400**, PNG or JPEG.
 
 ## Permission justification (for the “single purpose / permissions” section)
 
-Below is how each declared permission and host access is used in **version 1.1.4**.
+Below is how each declared permission and host access is used in **version 1.4.0**.
 
 ### `storage` (`chrome.storage.local`)
 
@@ -98,4 +98,4 @@ Host the English text from **[docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)** on a 
 ./scripts/package-chrome-extension.sh
 ```
 
-Upload **`dist/udalyarah-1.1.4.zip`**. See **[RELEASE-1.1.4.md](RELEASE-1.1.4.md)** for a release checklist.
+Upload **`dist/udalyarah-1.4.0.zip`**. See **[RELEASE-1.4.0.md](RELEASE-1.4.0.md)** for a release checklist.

@@ -26,7 +26,7 @@
 
 В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`**. Загрузите в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → **Package**.
 
-Чеклист релиза: **[docs/RELEASE-1.1.4.md](docs/RELEASE-1.1.4.md)**.
+Чеклист релиза: **[docs/RELEASE-1.4.0.md](docs/RELEASE-1.4.0.md)**.
 
 Подробные тексты для карточки магазина — в **[docs/store-listing.md](docs/store-listing.md)** (RU) и **[docs/store-listing-en.md](docs/store-listing-en.md)** (EN).
 
