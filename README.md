@@ -1,6 +1,6 @@
-# Ў далярах · av.by у USD / EUR
+# Ў далярах · av.by, Onliner и 21vek у USD / EUR
 
-Расширение для Chromium: показывает цены **av.by** в **долларах и евро** по курсам **НБ РБ**.
+Расширение для Chromium: показывает цены **av.by**, **catalog.onliner.by** и **21vek.by** в **долларах и евро** по курсам **НБ РБ**.
 
 ## Структура репозитория
 
@@ -14,21 +14,19 @@
 
 1. Откройте `chrome://extensions`, включите «Режим разработчика».
 2. «Загрузить распакованное» → укажите каталог **`chrome-extension/`**.
-3. Откройте любой раздел **av.by** (например `cars.av.by`) и проверьте подсказку / подпись к цене.
+3. Откройте **av.by**, **catalog.onliner.by** или **21vek.by** и проверьте подсказку / подпись к цене.
 
 Пересборка иконок из эталона (если меняли `icon-source.png`): из каталога `chrome-extension/` выполните `python3 generate_icons.py`.
 
 ## Архив для Chrome Web Store
 
-Из корня репозитория:
-
 ```bash
 ./scripts/package-chrome-extension.sh
 ```
 
-В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`** (в корне архива лежат `manifest.json`, `fonts/`, `icons/` и скрипты — без `test-page.html`, `generate_icons.py`, `icon-source.png`). Имя версии берётся из **`chrome-extension/manifest.json`**.
+В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`**. Загрузите в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → **Package**.
 
-Загрузите ZIP в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → ваш → **Package**.
+Чеклист релиза: **[docs/RELEASE-1.1.4.md](docs/RELEASE-1.1.4.md)**.
 
 Подробные тексты для карточки магазина — в **[docs/store-listing.md](docs/store-listing.md)** (RU) и **[docs/store-listing-en.md](docs/store-listing-en.md)** (EN).
 
