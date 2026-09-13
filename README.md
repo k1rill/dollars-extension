@@ -1,6 +1,6 @@
-# Ў далярах · av.by, Onliner и 21vek у USD / EUR
+# Ў далярах · BYN у USD / EUR на белорусских площадках
 
-Расширение для Chromium: показывает цены **av.by**, **catalog.onliner.by** и **21vek.by** в **долларах и евро** по курсам **НБ РБ**.
+Расширение для Chromium: показывает цены в **долларах и евро** по курсам **НБ РБ** на **av.by**, **Onliner** (каталог, авто, барахолка), **21vek**, **Kufar**, **Shop.by**, **Электросила**, **5 элемент**, **OZ.by**, **OMA**, **Emall**, **e-dostavka**.
 
 ## Структура репозитория
 
@@ -14,7 +14,7 @@
 
 1. Откройте `chrome://extensions`, включите «Режим разработчика».
 2. «Загрузить распакованное» → укажите каталог **`chrome-extension/`**.
-3. Откройте **av.by**, **catalog.onliner.by** или **21vek.by** и проверьте подсказку / подпись к цене.
+3. Откройте любой поддерживаемый сайт (например **kufar.by** или **ab.onliner.by**) и проверьте подсказку / подпись к цене.
 
 Пересборка иконок из эталона (если меняли `icon-source.png`): из каталога `chrome-extension/` выполните `python3 generate_icons.py`.
 
@@ -26,7 +26,7 @@
 
 В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`**. Загрузите в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → **Package**.
 
-Чеклист релиза: **[docs/RELEASE-1.4.0.md](docs/RELEASE-1.4.0.md)**.
+Чеклист релиза: **[docs/RELEASE-1.6.0.md](docs/RELEASE-1.6.0.md)**.
 
 Подробные тексты для карточки магазина — в **[docs/store-listing.md](docs/store-listing.md)** (RU) и **[docs/store-listing-en.md](docs/store-listing-en.md)** (EN).
 

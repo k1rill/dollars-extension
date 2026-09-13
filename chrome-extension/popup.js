@@ -1,5 +1,34 @@
 const $ = (id) => document.getElementById(id);
 
+const DEFAULT_SITES = {
+  avBy: true,
+  onlinerCatalog: true,
+  vek21: true,
+  kufar: true,
+  shopBy: true,
+  sila: true,
+  element5: true,
+  ozBy: true,
+  oma: true,
+  emall: true,
+  edostavka: true,
+};
+
+/** id чекбокса → ключ в fxSettings.sites */
+const SITE_CHECKBOXES = [
+  ["siteAvBy", "avBy"],
+  ["siteOnliner", "onlinerCatalog"],
+  ["siteVek21", "vek21"],
+  ["siteKufar", "kufar"],
+  ["siteShopBy", "shopBy"],
+  ["siteSila", "sila"],
+  ["siteElement5", "element5"],
+  ["siteOzBy", "ozBy"],
+  ["siteOma", "oma"],
+  ["siteEmall", "emall"],
+  ["siteEdostavka", "edostavka"],
+];
+
 /** Знак BYN праз іканачны шрыфт НБРБ (\e901), колер як у тэксту (.meta) */
 function bynIconImg() {
   return `<span class="popup-nbrb-icon" aria-hidden="true"></span>`;
@@ -29,6 +58,18 @@ function formatFetched(ts) {
   });
 }
 
+function readSitesFromUi() {
+  const sites = {};
+  for (const [checkboxId, key] of SITE_CHECKBOXES) {
+    sites[key] = $(checkboxId).checked;
+  }
+  return sites;
+}
+
+function anySiteChecked() {
+  return SITE_CHECKBOXES.some(([checkboxId]) => $(checkboxId).checked);
+}
+
 async function loadState() {
   const data = await chrome.storage.local.get([
     "fxSettings",
@@ -43,16 +84,16 @@ async function loadState() {
     showEur: true,
     sitesAllEnabled: true,
     ...raw,
-    sites: { avBy: true, onlinerCatalog: true, vek21: true, ...(raw.sites || {}) },
+    sites: { ...DEFAULT_SITES, ...(raw.sites || {}) },
   };
   $("inline").checked = !!s.showInline;
   $("hover").checked = !!s.showHover;
   $("showUsd").checked = s.showUsd !== false;
   $("showEur").checked = s.showEur !== false;
   $("sitesAll").checked = s.sitesAllEnabled !== false;
-  $("siteAvBy").checked = s.sites.avBy !== false;
-  $("siteOnliner").checked = s.sites.onlinerCatalog !== false;
-  $("siteVek21").checked = s.sites.vek21 !== false;
+  for (const [checkboxId, key] of SITE_CHECKBOXES) {
+    $(checkboxId).checked = s.sites[key] !== false;
+  }
   syncSitePickersVisibility();
 
   const status = $("status");
@@ -94,11 +135,7 @@ async function saveSettings() {
       showUsd: $("showUsd").checked,
       showEur: $("showEur").checked,
       sitesAllEnabled: $("sitesAll").checked,
-      sites: {
-        avBy: $("siteAvBy").checked,
-        onlinerCatalog: $("siteOnliner").checked,
-        vek21: $("siteVek21").checked,
-      },
+      sites: readSitesFromUi(),
     },
   });
 }
@@ -107,24 +144,19 @@ $("sitesAll").addEventListener("change", () => {
   syncSitePickersVisibility();
   saveSettings();
 });
+
 function ensureAtLeastOneSiteEnabled(changedId) {
   if ($("sitesAll").checked) return;
-  if ($("siteAvBy").checked || $("siteOnliner").checked || $("siteVek21").checked) return;
+  if (anySiteChecked()) return;
   $(changedId).checked = true;
 }
 
-$("siteAvBy").addEventListener("change", () => {
-  ensureAtLeastOneSiteEnabled("siteAvBy");
-  saveSettings();
-});
-$("siteOnliner").addEventListener("change", () => {
-  ensureAtLeastOneSiteEnabled("siteOnliner");
-  saveSettings();
-});
-$("siteVek21").addEventListener("change", () => {
-  ensureAtLeastOneSiteEnabled("siteVek21");
-  saveSettings();
-});
+for (const [checkboxId] of SITE_CHECKBOXES) {
+  $(checkboxId).addEventListener("change", () => {
+    ensureAtLeastOneSiteEnabled(checkboxId);
+    saveSettings();
+  });
+}
 
 $("inline").addEventListener("change", saveSettings);
 $("hover").addEventListener("change", saveSettings);

@@ -2,7 +2,7 @@
 
 ## Short description (~132 characters)
 
-`av.by, Onliner & 21vek.by prices in USD/EUR (NBRB). Tooltip and inline conversion.`
+`BYN prices in USD/EUR (NBRB) on Onliner, Kufar, 21vek, av.by and more.`
 
 *(Adjust length to fit the store form if the limit is enforced.)*
 
@@ -10,13 +10,17 @@
 
 ## Full description
 
-**U dalyarah** (Belarusian: *Ў далярах*) shows **US dollar and euro** equivalents for BYN prices on **av.by** and subdomains (e.g. **cars.av.by**), **catalog.onliner.by**, and **21vek.by**.
+**U dalyarah** (Belarusian: *Ў далярах*) shows **US dollar and euro** equivalents for BYN prices on popular Belarusian sites:
+
+- **av.by** and subdomains (e.g. **cars.av.by**)
+- **Onliner:** product catalog, auto (**ab.onliner.by**), classifieds (baraholka)
+- **21vek.by**, **Kufar**, **Shop.by**, **Elektrosila**, **5 element**, **OZ.by**, **OMA**, **Emall**, **e-dostavka**
 
 **Features**
 
 - Official **National Bank of the Republic of Belarus (NBRB)** exchange rates via the public NBRB API.
 - Optional **hover tooltip** and/or **inline text** next to each price; show **USD**, **EUR**, or both.
-- Per-site toggles: all supported sites or individual enablement (av.by, Onliner catalog, 21vek).
+- Per-site toggles: all supported sites or individual enablement.
 - Recognises BYN formats such as **“51 211 р.”**, **“2390,00 ƃ”**, **“1 167,29 р.”**, including split DOM layouts on product pages.
 
 **Privacy:** no account. Your display preferences and cached rates are stored **only on your device** in the browser. The extension does not send personal data to a developer-operated server.
@@ -25,9 +29,9 @@
 
 ## Screenshot ideas
 
-- `cars.av.by` listing with inline `≈ $… · €…` next to a price.
-- `catalog.onliner.by` product or prices table.
-- `21vek.by` product page with conversion.
+- `cars.av.by` or `kufar.by` listing with inline `≈ $… · €…`.
+- `catalog.onliner.by` or `ab.onliner.by` with ƃ prices.
+- Product page on `21vek.by` / `sila.by` / `shop.by`.
 - Extension popup: NBRB rates, site toggles, USD/EUR options.
 
 Use **1280×800** or **640×400**, PNG or JPEG.
@@ -36,7 +40,7 @@ Use **1280×800** or **640×400**, PNG or JPEG.
 
 ## Permission justification (for the “single purpose / permissions” section)
 
-Below is how each declared permission and host access is used in **version 1.4.0**.
+Below is how each declared permission and host access is used in **version 1.6.0**.
 
 ### `storage` (`chrome.storage.local`)
 
@@ -60,15 +64,21 @@ Below is how each declared permission and host access is used in **version 1.4.0
 
 ---
 
-### Host permission: `https://catalog.onliner.by/*`
+### Host permissions: Onliner (`catalog.onliner.by`, `ab.onliner.by`, `baraholka.onliner.by`)
 
-**Used for:** the same **content script** on the **Onliner product catalog** (BYN prices with **ƃ**, listing and product pages including price tables).
+**Used for:** the same **content script** on Onliner catalog, auto marketplace, and classifieds (BYN prices with **ƃ** or **р.**).
 
 ---
 
 ### Host permission: `https://www.21vek.by/*` and `https://21vek.by/*`
 
 **Used for:** the same **content script** on **21vek.by** so BYN prices (e.g. **“1 167,29 р.”**, including split markup on product pages) can be converted.
+
+---
+
+### Host permissions: `kufar.by`, `shop.by`, `sila.by`, `5element.by`, `oz.by`, `oma.by`, `emall.by`, `e-dostavka.by` (incl. `www.` where used)
+
+**Used for:** injecting the **content script** on these Belarusian retail / classifieds sites to detect BYN prices and show USD/EUR equivalents. No browsing history or price data is sent to the developer.
 
 ---
 
@@ -98,4 +108,4 @@ Host the English text from **[docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)** on a 
 ./scripts/package-chrome-extension.sh
 ```
 
-Upload **`dist/udalyarah-1.4.0.zip`**. See **[RELEASE-1.4.0.md](RELEASE-1.4.0.md)** for a release checklist.
+Upload **`dist/udalyarah-1.6.0.zip`**. See **[RELEASE-1.6.0.md](RELEASE-1.6.0.md)** for a release checklist.
