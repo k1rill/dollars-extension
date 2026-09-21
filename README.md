@@ -33,3 +33,13 @@
 ## Политика конфиденциальности
 
 Исходный текст: **[docs/PRIVACY_POLICY.md](docs/PRIVACY_POLICY.md)** — опубликуйте по публичному URL для формы Chrome Web Store.
+
+## AI / агенты (Modern Web Guidance)
+
+В репозитории установлены skills Chrome:
+
+```bash
+npx skills add GoogleChrome/modern-web-guidance --skill modern-web-guidance --skill chrome-extensions -y --agent cursor
+```
+
+См. **[AGENTS.md](AGENTS.md)** и метаданные магазина **[CHROMEWEBSTORE.md](CHROMEWEBSTORE.md)**. MCP Chrome DevTools: [`.cursor/mcp.json`](.cursor/mcp.json) (`--categoryExtensions --autoConnect`).
