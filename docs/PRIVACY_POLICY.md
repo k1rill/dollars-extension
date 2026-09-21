@@ -1,10 +1,12 @@
 # Privacy Policy — «Ў далярах» (Chrome extension)
 
-**Last updated:** May 15, 2026
+**Last updated:** September 21, 2026
 
 ## Summary
 
-The extension **«Ў далярах»** («U dalyarah») helps you see prices on **av.by**, **catalog.onliner.by**, and **21vek.by** converted to **USD** and **EUR** using official exchange rates from the **National Bank of the Republic of Belarus (NBRB)**.
+The extension **«Ў далярах»** («U dalyarah») helps you see prices on popular Belarusian shopping and classifieds sites converted to **USD** and **EUR** using official exchange rates from the **National Bank of the Republic of Belarus (NBRB)**.
+
+Supported sites include **av.by**, **Onliner** (catalog, auto, baraholka, real estate), **21vek.by**, **Kufar**, **Shop.by**, **Elektrosila (sila.by)**, **5 element**, **OZ.by**, **Emall**, and **edostavka.by** / **e-dostavka**.
 
 ## Data we collect
 
@@ -24,7 +26,7 @@ This information **never leaves your device** except as described under “Netwo
 The extension may connect to:
 
 1. **https://api.nbrb.by** — to download official daily exchange rates (USD/EUR vs BYN).
-2. **https://av.by**, **https://\*.av.by**, **https://catalog.onliner.by**, **https://www.21vek.by**, and **https://21vek.by** — only as web pages you open in your browser; the extension injects scripts to read visible prices and show conversions. **No price data is sent to us.**
+2. Supported shopping / classifieds hosts listed in the extension manifest (av.by, Onliner sections including r.onliner.by, 21vek, Kufar, Shop.by, sila.by, 5element.by, oz.by, emall.by, edostavka.by / e-dostavka.by, including common `www.` variants) — only as web pages you open in your browser; the extension injects scripts to read visible prices and show conversions. **No price data is sent to us.**
 
 There is **no** backend server operated by the extension author for collecting user data.
 
@@ -32,7 +34,7 @@ There is **no** backend server operated by the extension author for collecting u
 
 - **storage** — save settings and cached rates locally.
 - **alarms** — refresh cached rates periodically.
-- **Host access** — av.by, catalog.onliner.by, 21vek.by (to run on pages you visit) and api.nbrb.by (to fetch rates).
+- **Host access** — the supported sites above (to run on pages you visit) and api.nbrb.by (to fetch rates).
 
 ## Contact
 

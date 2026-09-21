@@ -9,7 +9,18 @@ const DEFAULT_SETTINGS = {
   showUsd: true,
   showEur: true,
   sitesAllEnabled: true,
-  sites: { avBy: true, onlinerCatalog: true, vek21: true },
+  sites: {
+    avBy: true,
+    onlinerCatalog: true,
+    vek21: true,
+    kufar: true,
+    shopBy: true,
+    sila: true,
+    element5: true,
+    ozBy: true,
+    emall: true,
+    edostavka: true,
+  },
 };
 
 async function fetchAndStoreRates() {
