@@ -13,8 +13,8 @@
 **U dalyarah** (Belarusian: *Ў далярах*) shows **US dollar and euro** equivalents for BYN prices on popular Belarusian sites:
 
 - **av.by** and subdomains (e.g. **cars.av.by**)
-- **Onliner:** product catalog, auto (**ab.onliner.by**), classifieds (baraholka)
-- **21vek.by**, **Kufar**, **Shop.by**, **Elektrosila**, **5 element**, **OZ.by**, **OMA**, **Emall**, **e-dostavka**
+- **Onliner:** product catalog, auto (**ab.onliner.by**), classifieds (baraholka), real estate (**r.onliner.by**)
+- **21vek.by**, **Kufar**, **Shop.by**, **Elektrosila**, **5 element**, **OZ.by**, **Emall**, **e-dostavka / edostavka.by**
 
 **Features**
 
@@ -40,7 +40,7 @@ Use **1280×800** or **640×400**, PNG or JPEG.
 
 ## Permission justification (for the “single purpose / permissions” section)
 
-Below is how each declared permission and host access is used in **version 1.6.0**.
+Below is how each declared permission and host access is used in **version 1.6.1**.
 
 ### `storage` (`chrome.storage.local`)
 
@@ -64,9 +64,9 @@ Below is how each declared permission and host access is used in **version 1.6.0
 
 ---
 
-### Host permissions: Onliner (`catalog.onliner.by`, `ab.onliner.by`, `baraholka.onliner.by`)
+### Host permissions: Onliner (`catalog.onliner.by`, `ab.onliner.by`, `baraholka.onliner.by`, `r.onliner.by`)
 
-**Used for:** the same **content script** on Onliner catalog, auto marketplace, and classifieds (BYN prices with **ƃ** or **р.**).
+**Used for:** the same **content script** on Onliner catalog, auto marketplace, classifieds, and real estate (BYN prices with **ƃ** or **р.**; on `r.onliner.by` typically when currency is set to BYN).
 
 ---
 
@@ -76,9 +76,9 @@ Below is how each declared permission and host access is used in **version 1.6.0
 
 ---
 
-### Host permissions: `kufar.by`, `shop.by`, `sila.by`, `5element.by`, `oz.by`, `oma.by`, `emall.by`, `e-dostavka.by` (incl. `www.` where used)
+### Host permissions: `kufar.by`, `shop.by`, `sila.by`, `5element.by`, `oz.by`, `emall.by`, `edostavka.by` / `e-dostavka.by` (incl. `www.` where used)
 
-**Used for:** injecting the **content script** on these Belarusian retail / classifieds sites to detect BYN prices and show USD/EUR equivalents. No browsing history or price data is sent to the developer.
+**Used for:** injecting the **content script** on these Belarusian retail / classifieds / grocery sites to detect BYN prices and show USD/EUR equivalents. No browsing history or price data is sent to the developer.
 
 ---
 
@@ -108,4 +108,4 @@ Host the English text from **[docs/PRIVACY_POLICY.md](PRIVACY_POLICY.md)** on a 
 ./scripts/package-chrome-extension.sh
 ```
 
-Upload **`dist/udalyarah-1.6.0.zip`**. See **[RELEASE-1.6.0.md](RELEASE-1.6.0.md)** for a release checklist.
+Upload **`dist/udalyarah-1.6.1.zip`**. See **[RELEASE-1.6.1.md](RELEASE-1.6.1.md)** for a release checklist.

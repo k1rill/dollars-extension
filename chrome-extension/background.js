@@ -18,7 +18,6 @@ const DEFAULT_SETTINGS = {
     sila: true,
     element5: true,
     ozBy: true,
-    oma: true,
     emall: true,
     edostavka: true,
   },

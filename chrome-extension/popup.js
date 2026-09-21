@@ -9,7 +9,6 @@ const DEFAULT_SITES = {
   sila: true,
   element5: true,
   ozBy: true,
-  oma: true,
   emall: true,
   edostavka: true,
 };
@@ -24,7 +23,6 @@ const SITE_CHECKBOXES = [
   ["siteSila", "sila"],
   ["siteElement5", "element5"],
   ["siteOzBy", "ozBy"],
-  ["siteOma", "oma"],
   ["siteEmall", "emall"],
   ["siteEdostavka", "edostavka"],
 ];

@@ -1,6 +1,6 @@
 # Ў далярах · BYN у USD / EUR на белорусских площадках
 
-Расширение для Chromium: показывает цены в **долларах и евро** по курсам **НБ РБ** на **av.by**, **Onliner** (каталог, авто, барахолка), **21vek**, **Kufar**, **Shop.by**, **Электросила**, **5 элемент**, **OZ.by**, **OMA**, **Emall**, **e-dostavka**.
+Расширение для Chromium: показывает цены в **долларах и евро** по курсам **НБ РБ** на **av.by**, **Onliner** (каталог, авто, барахолка, недвижимость), **21vek**, **Kufar**, **Shop.by**, **Электросила**, **5 элемент**, **OZ.by**, **Emall**, **edostavka**.
 
 ## Структура репозитория
 
@@ -26,7 +26,7 @@
 
 В каталоге **`dist/`** появится **`udalyarah-<версия>.zip`**. Загрузите в [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole/) → **Package**.
 
-Чеклист релиза: **[docs/RELEASE-1.6.0.md](docs/RELEASE-1.6.0.md)**.
+Чеклист релиза: **[docs/RELEASE-1.6.1.md](docs/RELEASE-1.6.1.md)**.
 
 Подробные тексты для карточки магазина — в **[docs/store-listing.md](docs/store-listing.md)** (RU) и **[docs/store-listing-en.md](docs/store-listing-en.md)** (EN).
 

@@ -15,8 +15,8 @@
 **Ў далярах** показывает эквивалент цены в **долларах США и евро** на популярных белорусских площадках:
 
 - **av.by** и поддомены (**cars.av.by**, **moto.av.by** и др.)
-- **Onliner:** каталог, автобарахолка (**ab.onliner.by**), барахолка
-- **21vek.by**, **Kufar**, **Shop.by**, **Электросила**, **5 элемент**, **OZ.by**, **OMA**, **Emall**, **e-dostavka**
+- **Onliner:** каталог, автобарахолка (**ab.onliner.by**), барахолка, недвижимость (**r.onliner.by**)
+- **21vek.by**, **Kufar**, **Shop.by**, **Электросила**, **5 элемент**, **OZ.by**, **Emall**, **e-dostavka / edostavka.by**
 
 **Возможности:**
 
@@ -68,4 +68,4 @@
 ./scripts/package-chrome-extension.sh
 ```
 
-Загрузите **`dist/udalyarah-1.6.0.zip`**. Чеклист релиза: **[RELEASE-1.6.0.md](RELEASE-1.6.0.md)**.
+Загрузите **`dist/udalyarah-1.6.1.zip`**. Чеклист релиза: **[RELEASE-1.6.1.md](RELEASE-1.6.1.md)**.

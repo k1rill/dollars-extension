@@ -25,17 +25,17 @@
   })();
 
   /**
-   * Полная строка в одном текстовом узле: «51 211 р.», «799.00 р», Br, BYN…
-   * «р» без точки — sila.by; не цеплять «рублей» и «р/мес».
+   * Полная строка в одном текстовом узле: «51 211 р.», «799.00 р», shop.by «p.», Br, BYN…
+   * «р» без точки — sila.by; латинская «p.» — shop.by; не цеплять «рублей» и «р/мес».
    */
   const PRICE_RE =
-    /(\d[\d\s\u00A0]*(?:[.,]\d{1,2})?)\s*(Br|руб\.?|р\.?|BYN|бел\.?\s*руб\.?|ƃ)(?![\p{L}\p{N}_/])/giu;
+    /(\d[\d\s\u00A0]*(?:[.,]\d{1,2})?)\s*(Br|руб\.?|р\.?|p\.|BYN|бел\.?\s*руб\.?|ƃ)(?![\p{L}\p{N}_/])/giu;
 
   /**
-   * av.by / catalog.onliner.by: валюта в отдельном текстовом узле, число — в соседнем
-   * Примеры: <span>16 788</span><!-- -->р. · <span>16 788</span><!-- -->руб. · <span>2390,00</span> ƃ
+   * av.by / catalog.onliner.by / r.onliner: валюта в отдельном текстовом узле, число — в соседнем
+   * Примеры: <span>16 788</span><!-- -->р. · <span>291 403,00</span><span>ƃ</span> · shop.by p.
    */
-  const CURRENCY_SUFFIX_TEXT_RE = /^\s*(?:р\.?|руб\.?|ƃ)\s*$/u;
+  const CURRENCY_SUFFIX_TEXT_RE = /^\s*(?:р\.?|руб\.?|p\.|ƃ)\s*$/u;
 
   /** Onliner карточка: <motion>2390</motion><motion>,00 ƃ</motion> — дробная часть и ƃ во втором блоке */
   const ONLINER_FRACTION_SUFFIX_TEXT_RE = /^\s*,\d{1,2}\s*ƃ\s*$/u;
@@ -53,7 +53,6 @@
     sila: true,
     element5: true,
     ozBy: true,
-    oma: true,
     emall: true,
     edostavka: true,
   };
@@ -72,7 +71,8 @@
     if (
       h === "catalog.onliner.by" ||
       h === "ab.onliner.by" ||
-      h === "baraholka.onliner.by"
+      h === "baraholka.onliner.by" ||
+      h === "r.onliner.by"
     ) {
       return "onlinerCatalog";
     }
@@ -83,7 +83,6 @@
     if (h === "sila.by") return "sila";
     if (h === "5element.by") return "element5";
     if (h === "oz.by") return "ozBy";
-    if (h === "oma.by") return "oma";
     if (h === "emall.by") return "emall";
     if (h === "e-dostavka.by" || h === "edostavka.by") return "edostavka";
     return null;
@@ -417,6 +416,17 @@
     document.querySelectorAll(".avfx-hook").forEach((hook) => {
       if (hook.classList.contains("avfx-onliner-price")) return;
       if (hook.classList.contains("avfx-rub-fraction")) return;
+      /* 5element: декорируем родной .p-price, не заменяем на текст */
+      if (hook.classList.contains("avfx-native")) {
+        hook.classList.remove(
+          "avfx-hook",
+          "avfx",
+          "avfx-native",
+          "avfx-hook-onliner-cell",
+        );
+        delete hook.dataset.avfxDone;
+        return;
+      }
       const pt = hook.querySelector(".avfx-price-text");
       const text = pt ? pt.textContent : hook.textContent;
       hook.replaceWith(document.createTextNode(text));
@@ -556,12 +566,21 @@
     if (!currencyTextNode.parentNode || insideAvfx(currencyTextNode)) return;
     const parent = currencyTextNode.parentElement;
     if (!parent) return;
+    /* r.onliner: «ƃ» в фильтре цены — не цена объявления */
+    if (
+      parent.classList?.contains("filter__input-measure") ||
+      parent.closest?.(".filter__input-measure, .filter__form")
+    ) {
+      return;
+    }
 
     // av.by: валюта может быть внутри отдельного тега (например <small>руб.</small>),
     // при этом число — предыдущий sibling уже для parentElement, а не для самого textNode.
+    // r.onliner: <span>291 403,00</span><span class="classified__currency">ƃ</span>
     let cur = previousMeaningfulSibling(currencyTextNode);
     if (!cur) cur = previousMeaningfulSibling(parent);
     if (!cur) return;
+    if (cur.nodeType === Node.ELEMENT_NODE && cur.tagName === "INPUT") return;
 
     let numText = "";
     if (cur.nodeType === Node.ELEMENT_NODE) {
@@ -575,18 +594,51 @@
     const amount = parseAmount(numText.trim());
     if (!amount) return;
 
+    /* r.onliner: оборачиваем весь блок цены (число + ƃ), не только span валюты */
+    let wrapRoot = parent;
+    if (parent.classList?.contains("classified__currency") && parent.parentElement) {
+      wrapRoot = parent.parentElement;
+      if (insideAvfx(wrapRoot)) return;
+    }
+
     const priceText = document.createElement("span");
     priceText.className = "avfx-price-text";
-    while (parent.firstChild) {
-      priceText.appendChild(parent.firstChild);
+    while (wrapRoot.firstChild) {
+      priceText.appendChild(wrapRoot.firstChild);
     }
 
     const hook = document.createElement("span");
     hook.className = "avfx-hook avfx";
     hook.appendChild(priceText);
-    parent.appendChild(hook);
+    wrapRoot.appendChild(hook);
 
     decoratePriceHook(hook, amount);
+  }
+
+  /**
+   * 5element.by: цена «2 699.<span>00</span> <i class="nbrb-icon-byn">» без текстовой валюты.
+   */
+  function processNbrbIconPrices() {
+    if (getCurrentSiteId() !== "element5") return;
+    const icons = document.querySelectorAll(
+      "i.nbrb-icon-byn, i.nbrb-icon.nbrb-icon-byn, .nbrb-icon-byn",
+    );
+    for (const icon of icons) {
+      if (!icon.isConnected || insideAvfx(icon)) continue;
+      const priceEl =
+        icon.closest(".p-price, .p-price__old") || icon.parentElement;
+      if (!priceEl || insideAvfx(priceEl) || priceEl.dataset.avfxDone) continue;
+
+      const rawText = (priceEl.textContent || "").trim();
+      if (/\/\s*мес/i.test(rawText)) continue;
+
+      const amount = parseAmount(rawText);
+      if (!amount) continue;
+
+      priceEl.dataset.avfxDone = "1";
+      priceEl.classList.add("avfx-hook", "avfx", "avfx-native");
+      decoratePriceHook(priceEl, amount, { hoverTarget: priceEl });
+    }
   }
 
   function processTextNode(textNode) {
@@ -647,7 +699,9 @@
       processSplitCurrencySuffix(node);
     }
 
-    const quick = /Br|руб|BYN|р\.?|ƃ/i;
+    processNbrbIconPrices();
+
+    const quick = /Br|руб|BYN|р\.?|p\.|ƃ/i;
     const nodes = collectTextNodes(document.body);
     for (const node of nodes) {
       if (!node.isConnected) continue;
